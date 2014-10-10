@@ -1,28 +1,14 @@
 'use strict';
 
-var midi = require( 'midi' );
+var osc = require( 'node-osc' );
 
-var input = new midi.input();
-var output = new midi.output();
+var CLIENT = process.env.CLIENT || '127.0.0.1';
+var IN = process.env.IN || 3334;
+var OUT = process.env.OUT || 3333;
 
-var rtpmidi = require( 'rtpmidi' );
+var client = new osc.Client( CLIENT, IN );
+var server = new osc.Server( OUT, '0.0.0.0' );
 
-var session = rtpmidi.manager.createSession({
-  localName: 'sessions',
-  bonjourName: 'Node RTPMidi',
-  port: 5008
+server.on( 'message', function( msg ) {
+  console.log( msg );
 });
-
-input.openVirtualPort( 'midi-input' );
-output.openVirtualPort( 'midi-output' );
-
-session.on( 'message', function( deltaTime, message ) {
-  var commands = [].slice.call( message, 0 );
-  console.log( commands );
-  output.sendMessage( commands );
-});
-
-input.on( 'message', function( deltaTime, message ) {
-  session.sendMessage( deltaTime, message );
-});
-

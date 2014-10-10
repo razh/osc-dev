@@ -1,22 +1,21 @@
 {
-  "name": "midi-dev",
+  "name": "osc-dev",
   "version": "0.0.0",
-  "description": "midi-dev",
+  "description": "osc-dev",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/razh/midi-dev.git"
+    "url": "https://github.com/razh/osc-dev.git"
   },
   "author": "razh",
   "private": true,
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/razh/midi-dev/issues"
+    "url": "https://github.com/razh/osc-dev/issues"
   },
-  "homepage": "https://github.com/razh/midi-dev",
+  "homepage": "https://github.com/razh/osc-dev",
   "dependencies": {
-    "midi": "^0.9.0",
-    "rtpmidi": "^0.1.7",
+    "node-osc": "^0.2.1",
     "ws": "^0.4.32"
   }
 }
