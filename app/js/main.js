@@ -17,20 +17,7 @@
   socket.addEventListener( 'message', function( event ) {
     var data = JSON.parse( event.data );
     console.log( data );
-
-    // Tab (no variables).
-    if ( data.length === 1 ) {
-      var match = /\/([^\/]+)/.exec( data[0] );
-      if ( match ) {
-        console.log({
-          type: 'tab',
-          tab: match[1]
-        });
-      }
-    } else {
-      // Control.
-      route( data[0] );
-    }
+    route( data );
   });
 
 
@@ -154,6 +141,22 @@
     };
   });
 
+  // Global tabs and controls.
+  var state = {
+    tabs: [],
+    controls: []
+  };
+
+  function findBy( array, callback ) {
+    var element;
+    for ( var i = 0, il = array.length; i < il; i++ ) {
+      element = array[i];
+      if ( callback( element, i, array ) ) {
+        return element;
+      }
+    }
+  }
+
   /**
    * The standard control name format consists of the tab, control, and
    * coordinates specifiers for multi-controls.
@@ -165,15 +168,74 @@
    * Note that the tab is optional. Controls can be global.
    */
 
-  function route( string ) {
+  function route( data ) {
     var match;
+    var name;
+
+    // Tab (no variables).
+    var tab;
+    if ( data.length === 1 ) {
+      match = /\/([^\/]+)/.exec( data[0] );
+      if ( match ) {
+        name = match[1];
+
+        tab = findBy( state.tabs, function( element ) {
+          return element.name === name;
+        });
+
+        if ( !tab ) {
+          tab = new Tab( name );
+          state.tabs.push( tab );
+        }
+
+        console.log( tab );
+      }
+
+      return;
+    }
+
+    // Control.
+    var string = data[0];
     for ( var i = 0, il = parsers.length; i < il; i++ ) {
       match = parsers[i].parse( string );
       if ( match ) {
-        console.log( match );
         break;
       }
     }
+
+    console.log( match );
+    if ( !match ) {
+      return;
+    }
+
+    // Find controls array.
+    var controls;
+    if ( match.tab ) {
+      tab = findBy( state.tabs, function( element ) {
+        return element.name === match.tab;
+      });
+
+      if ( !tab ) {
+        tab = new Tab( match.tab );
+        state.tabs.push( tab );
+      }
+
+      controls = tab.controls;
+    } else {
+      // Global controls.
+      controls = state.controls;
+    }
+
+    var control = findBy( controls, function( control ) {
+      return control.name === match.name;
+    });
+
+    if ( !control ) {
+      control = new match.constructor( match.name );
+      controls.push( control );
+    }
+
+    console.log( control );
   }
 
 }) ();
