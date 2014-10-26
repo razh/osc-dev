@@ -1,3 +1,15 @@
+/* global Push,
+Toggle,
+XY,
+Fader,
+Rotary,
+Encoder,
+MultiToggle,
+MultiXY,
+MultiPush,
+MultiFader,
+Tab
+ */
 (function() {
   'use strict';
 
@@ -20,85 +32,21 @@
     route( data );
   });
 
-
-  // Boolean.
-  function Push( name, value ) {
-    this.name = name || '';
-    this.value = value || false;
-  }
-
-  function Toggle( name, value ) {
-    this.name = name || '';
-    this.value = value || false;
-  }
-
-  // Numeric.
-  function Fader( name, value ) {
-    this.name = name || '';
-    this.value = value || 0;
-  }
-
-  function Rotary( name, value ) {
-    this.name = name || '';
-    this.value = value || 0;
-  }
-
-  // Encoder.
-  function Encoder( name ) {
-    this.name = name || '';
-  }
-
-  // Coordinates.
-  function XY( name, x, y ) {
-    this.name = name || '';
-    this.x = x || 0;
-    this.y = y || 0;
-  }
-
-  // Multi-controls.
-  function MultiToggle( name, values ) {
-    this.name = name || '';
-    this.values = values || [];
-  }
-
-  function MultiXY( name, values ) {
-    this.name = name || '';
-    this.values = values || [];
-  }
-
-  function MultiPush( name, values ) {
-    this.name = name || '';
-    this.values = values || [];
-  }
-
-  function MultiFader( name, values ) {
-    this.name = name || '';
-    this.values = values || [];
-  }
-
-  // Tab.
-  function Tab( name ) {
-    this.name = name || '';
-    this.controls = [];
-  }
-
-
-  var classNames = [
-    { name: 'push', constructor: Push },
-    { name: 'toggle', constructor: Toggle },
-    { name: 'xy', constructor: XY },
-    { name: 'fader', constructor: Fader },
-    { name: 'rotary', constructor: Rotary },
-    { name: 'encoder', constructor: Encoder },
-    { name: 'multitoggle', constructor: MultiToggle },
-    { name: 'multixy', constructor: MultiXY },
-    { name: 'multipush', constructor: MultiPush },
-    { name: 'multifader', constructor: MultiFader },
+  var constructors = [
+    Push,
+    Toggle,
+    XY,
+    Fader,
+    Rotary,
+    Encoder,
+    MultiToggle,
+    MultiXY,
+    MultiPush,
+    MultiFader
   ];
 
-  var parsers = classNames.map(function( className ) {
-    var name = className.name;
-    var constructor = className.constructor;
+  var parsers = constructors.map(function( constructor ) {
+    var name = constructor.type;
 
     var regexString = '\\/' +
       /* Tab name. */
