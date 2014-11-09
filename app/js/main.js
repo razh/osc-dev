@@ -1,4 +1,5 @@
-/* global Push,
+/* global _,
+Push,
 Toggle,
 XY,
 Fader,
@@ -95,16 +96,6 @@ Tab
     controls: []
   };
 
-  function findBy( array, callback ) {
-    var element;
-    for ( var i = 0, il = array.length; i < il; i++ ) {
-      element = array[i];
-      if ( callback( element, i, array ) ) {
-        return element;
-      }
-    }
-  }
-
   /**
    * The standard control name format consists of the tab, control, and
    * coordinates specifiers for multi-controls.
@@ -127,7 +118,7 @@ Tab
       if ( match ) {
         name = match[1];
 
-        tab = findBy( state.tabs, function( element ) {
+        tab = _.find( state.tabs, function( element ) {
           return element.name === name;
         });
 
@@ -159,7 +150,7 @@ Tab
     // Find controls array.
     var controls;
     if ( match.tab ) {
-      tab = findBy( state.tabs, function( element ) {
+      tab = _.find( state.tabs, function( element ) {
         return element.name === match.tab;
       });
 
@@ -174,7 +165,7 @@ Tab
       controls = state.controls;
     }
 
-    var control = findBy( controls, function( control ) {
+    var control = _.find( controls, function( control ) {
       return control.name === match.name;
     });
 
