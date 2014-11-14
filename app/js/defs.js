@@ -8,12 +8,24 @@ function Push( name, value ) {
 
 Push.type = 'push';
 
+Push.prototype.set = function( value ) {
+  this.value = value;
+  return this;
+};
+
+
 function Toggle( name, value ) {
   this.name = name || '';
   this.value = value || false;
 }
 
 Toggle.type = 'toggle';
+
+Toggle.prototype.set = function( value ) {
+  this.value = value;
+  return this;
+};
+
 
 // Numeric.
 function Fader( name, value ) {
@@ -23,6 +35,12 @@ function Fader( name, value ) {
 
 Fader.type = 'fader';
 
+Fader.prototype.set = function( value ) {
+  this.value = value;
+  return this;
+};
+
+
 function Rotary( name, value ) {
   this.name = name || '';
   this.value = value || 0;
@@ -30,12 +48,19 @@ function Rotary( name, value ) {
 
 Rotary.type = 'rotary';
 
+Rotary.prototype.set = function( value ) {
+  this.value = value;
+  return this;
+};
+
+
 // Encoder.
 function Encoder( name ) {
   this.name = name || '';
 }
 
 Encoder.type = 'encoder';
+
 
 // Coordinates.
 function XY( name, x, y ) {
@@ -45,6 +70,13 @@ function XY( name, x, y ) {
 }
 
 XY.type = 'xy';
+
+XY.prototype.set = function( x, y ) {
+  this.x = x;
+  this.y = y;
+  return this;
+};
+
 
 // Multi-controls.
 function MultiToggle( name, values ) {
