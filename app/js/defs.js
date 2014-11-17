@@ -1,4 +1,17 @@
+/*global _*/
 'use strict';
+
+function setter( value ) {
+  /*jshint validthis:true*/
+  this.value = value;
+  return this;
+}
+
+function setterMultiple( indices, value ) {
+  /*jshint validthis:true*/
+  _.set( this.values, indices, value );
+  return this;
+}
 
 // Boolean.
 function Push( name, value ) {
@@ -8,11 +21,7 @@ function Push( name, value ) {
 
 Push.type = 'push';
 
-Push.prototype.set = function( value ) {
-  this.value = value;
-  return this;
-};
-
+Push.prototype.set = setter;
 
 function Toggle( name, value ) {
   this.name = name || '';
@@ -21,11 +30,7 @@ function Toggle( name, value ) {
 
 Toggle.type = 'toggle';
 
-Toggle.prototype.set = function( value ) {
-  this.value = value;
-  return this;
-};
-
+Toggle.prototype.set = setter;
 
 // Numeric.
 function Fader( name, value ) {
@@ -35,11 +40,7 @@ function Fader( name, value ) {
 
 Fader.type = 'fader';
 
-Fader.prototype.set = function( value ) {
-  this.value = value;
-  return this;
-};
-
+Fader.prototype.set = setter;
 
 function Rotary( name, value ) {
   this.name = name || '';
@@ -48,11 +49,7 @@ function Rotary( name, value ) {
 
 Rotary.type = 'rotary';
 
-Rotary.prototype.set = function( value ) {
-  this.value = value;
-  return this;
-};
-
+Rotary.prototype.set = setter;
 
 // Encoder.
 function Encoder( name ) {
@@ -86,12 +83,18 @@ function MultiToggle( name, values ) {
 
 MultiToggle.type = 'multitoggle';
 
+MultiToggle.prototype.set = setterMultiple;
+
+
 function MultiXY( name, values ) {
   this.name = name || '';
   this.values = values || [];
 }
 
 MultiXY.type = 'multixy';
+
+MultiXY.prototype.set = setterMultiple;
+
 
 function MultiPush( name, values ) {
   this.name = name || '';
@@ -100,12 +103,18 @@ function MultiPush( name, values ) {
 
 MultiPush.type = 'multipush';
 
+MultiPush.prototype.set = setterMultiple;
+
+
 function MultiFader( name, values ) {
   this.name = name || '';
   this.values = values || [];
 }
 
 MultiFader.type = 'multifader';
+
+MultiFader.prototype.set = setterMultiple;
+
 
 // Tab.
 function Tab( name ) {
