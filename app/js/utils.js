@@ -37,3 +37,7 @@ _.set = function( array, indices, value ) {
     array = array[ index ];
   }
 };
+
+_.parseInt = function( n ) {
+  return parseInt( n, 10 );
+};

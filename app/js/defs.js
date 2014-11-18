@@ -58,6 +58,11 @@ function Encoder( name ) {
 
 Encoder.type = 'encoder';
 
+Encoder.prototype.set = function( value ) {
+  console.log( value );
+  return this;
+};
+
 
 // Coordinates.
 function XY( name, x, y ) {

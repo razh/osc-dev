@@ -74,12 +74,17 @@ Tab
     function parse( string ) {
       var path = regex.exec( string );
       if ( path ) {
+        var coordinates = path[3];
+        if ( coordinates ) {
+          coordinates = coordinates.split( '/' ).map( _.parseInt );
+        }
+
         return {
           type: name,
           constructor: constructor,
           tab: path[1],
           name: path[2],
-          coordinates: path[3] ? path[3].split( '/' ) : path[3]
+          coordinates: coordinates
         };
       }
     }
@@ -175,6 +180,11 @@ Tab
     }
 
     console.log( control );
+    if ( match.coordinates ) {
+      control.set.apply( control, [ match.coordinates, data.slice(1) ] );
+    } else {
+      control.set.apply( control, data.slice(1) );
+    }
   }
 
 }) ();
