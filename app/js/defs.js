@@ -1,130 +1,94 @@
-/*global _*/
-'use strict';
+import _ from './utils';
 
-function setter( value ) {
-  /*jshint validthis:true*/
-  this.value = value;
-  return this;
+class Control {
+  constructor( name = '', value = 0 ) {
+    this.name = name;
+    this.value = value;
+  }
+
+  set( value ) {
+    this.value = value;
+    return this;
+  }
 }
 
-function setterMultiple( indices, value ) {
-  /*jshint validthis:true*/
-  _.set( this.values, indices, value );
-  return this;
+class MultiControl {
+  constructor( name = '', values = [] ) {
+    this.name = name;
+    this.values = values;
+  }
+
+  set( indices, value ) {
+    _.set( this.values, indices, value );
+    return this;
+  }
 }
 
 // Boolean.
-function Push( name, value ) {
-  this.name = name || '';
-  this.value = value || false;
-}
-
+export class Push extends Control {}
 Push.type = 'push';
 
-Push.prototype.set = setter;
-
-function Toggle( name, value ) {
-  this.name = name || '';
-  this.value = value || false;
-}
-
+export class Toggle extends Control {}
 Toggle.type = 'toggle';
 
-Toggle.prototype.set = setter;
-
 // Numeric.
-function Fader( name, value ) {
-  this.name = name || '';
-  this.value = value || 0;
-}
-
+export class Fader extends Control {}
 Fader.type = 'fader';
 
-Fader.prototype.set = setter;
-
-function Rotary( name, value ) {
-  this.name = name || '';
-  this.value = value || 0;
-}
-
+export class Rotary extends Control {}
 Rotary.type = 'rotary';
 
-Rotary.prototype.set = setter;
-
 // Encoder.
-function Encoder( name ) {
-  this.name = name || '';
+export class Encoder {
+  constructor( name = '' ) {
+    this.name = name;
+  }
+
+  set( value ) {
+    console.log( value );
+    return this;
+  }
 }
 
 Encoder.type = 'encoder';
 
-Encoder.prototype.set = function( value ) {
-  console.log( value );
-  return this;
-};
-
-
 // Coordinates.
-function XY( name, x, y ) {
-  this.name = name || '';
-  this.x = x || 0;
-  this.y = y || 0;
+export class XY {
+  constructor( name = '', x = 0, y = 0 ) {
+    this.name = name;
+    this.x = x;
+    this.y = y;
+  }
+
+  set( x, y ) {
+    this.x = x;
+    this.y = y;
+    return this;
+  }
 }
 
 XY.type = 'xy';
 
-XY.prototype.set = function( x, y ) {
-  this.x = x;
-  this.y = y;
-  return this;
-};
-
 
 // Multi-controls.
-function MultiToggle( name, values ) {
-  this.name = name || '';
-  this.values = values || [];
-}
-
+export class MultiToggle extends MultiControl {}
 MultiToggle.type = 'multitoggle';
 
-MultiToggle.prototype.set = setterMultiple;
-
-
-function MultiXY( name, values ) {
-  this.name = name || '';
-  this.values = values || [];
-}
-
+export class MultiXY extends MultiControl {}
 MultiXY.type = 'multixy';
 
-MultiXY.prototype.set = setterMultiple;
-
-
-function MultiPush( name, values ) {
-  this.name = name || '';
-  this.values = values || [];
-}
-
+export class MultiPush extends MultiControl {}
 MultiPush.type = 'multipush';
 
-MultiPush.prototype.set = setterMultiple;
-
-
-function MultiFader( name, values ) {
-  this.name = name || '';
-  this.values = values || [];
-}
-
+export class MultiFader extends MultiControl {}
 MultiFader.type = 'multifader';
 
-MultiFader.prototype.set = setterMultiple;
-
-
 // Tab.
-function Tab( name ) {
-  this.name = name || '';
-  this.controls = [];
+export class Tab {
+  constructor( name = '', controls = [] ) {
+    this.name = name;
+    this.controls = controls;
+  }
 }
 
 Tab.type = 'tab';
