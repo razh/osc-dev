@@ -1,12 +1,14 @@
 'use strict';
 
+var PORT = process.env.PORT || 3000;
+
 var browserSync = require('browser-sync');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var del = require('del');
 var es6ify = require('es6ify');
 var reactify = require('reactify');
-var source =  require('vinyl-source-stream');
+var source = require('vinyl-source-stream');
 
 var gulp = require('gulp');
 var util = require('gulp-util');
@@ -19,29 +21,29 @@ function onError(error) {
 
 gulp.task('browser-sync', function() {
   return browserSync({
+    browser: [],
+    port: PORT,
     server: {
       baseDir: './'
     }
   });
 });
 
-
 gulp.task('js', function() {
-  var bundler = watchify(browserify(es6ify.runtime,
+  var bundler = watchify(browserify('./app/js/main.js',
     Object.assign({
       debug: true,
       extensions: ['.jsx']
     }, watchify.args)));
 
   bundler
-    .add('./app/js/main.js')
     .transform(reactify)
     .transform(es6ify.configure(/.(js|jsx)/));
 
   function rebundle() {
     return bundler.bundle()
       .on('error', onError)
-      .pipe(source('main.js'))
+      .pipe(source('bundle.js'))
       .pipe(gulp.dest('dist'))
       .pipe(browserSync.reload({stream: true, once: true}));
   }
@@ -53,6 +55,11 @@ gulp.task('js', function() {
   return rebundle();
 });
 
+gulp.task('traceur-runtime', function() {
+  return gulp.src(es6ify.runtime)
+    .pipe(gulp.dest('dist'));
+});
+
 gulp.task('clean', del.bind(null, ['dist']));
 
-gulp.task('default', ['js', 'browser-sync']);
+gulp.task('default', ['traceur-runtime', 'js', 'browser-sync']);
