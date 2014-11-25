@@ -1,4 +1,5 @@
 import _ from './utils';
+
 import {
   Push,
   Toggle,
@@ -12,6 +13,8 @@ import {
   MultiFader,
   Tab
 } from './defs';
+
+import { render } from './views';
 
 var params = window.location.search.substring(1)
   .split( '&' )
@@ -60,7 +63,7 @@ var parsers = constructors.map(function( constructor ) {
     ')?' +
 
     /* Control name (with type). */
-    type + '([^\\/]*)?' +
+    '(' + type + '[^\\/]*)' +
 
     /* Optional coordinates for multi-controls. */
     '(?:\\/' +
@@ -172,9 +175,13 @@ function route( data ) {
   }
 
   console.log( control );
+
+  var values = data.slice(1);
   if ( match.coordinates ) {
-    control.set( ...[ match.coordinates, data.slice(1) ] );
-  } else {
-    control.set( ...data.slice(1) );
+    values = [ match.coordinates, values ];
   }
+
+  control.set( ...values );
+
+  requestAnimationFrame(() => render( state ));
 }

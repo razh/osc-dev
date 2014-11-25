@@ -9,7 +9,6 @@
   "newcap": true,
   "noarg": true,
   "nonew": true,
-  "quotmark": "single",
   "trailing": true,
   "undef": true,
   "unused": true,
