@@ -7,11 +7,15 @@ export var ControlView = React.createClass({
     };
   },
 
+  propTypes: {
+    control: React.PropTypes.object
+  },
+
   render() {
     return (
-      <div>
-        <div>{this.props.control.name}</div>
-        <div>{this.props.control.value}</div>
+      <div className='control'>
+        <div className='control-name'>{this.props.control.name}</div>
+        <div className='control-value'>{this.props.control.value}</div>
       </div>
     );
   }
@@ -24,17 +28,21 @@ export var MultiControlView = React.createClass({
     };
   },
 
+  propTypes: {
+    control: React.PropTypes.object
+  },
+
   render() {
-    function renderValue( value ) {
+    function renderValue( value, i ) {
       return Array.isArray( value ) ?
-        <div>{value.map( renderValue )}</div> :
-        <div>{value}</div>;
+        <div className='control-values' key={i}>{value.map( renderValue )}</div> :
+        <div className='control-value' key={i}>{value}</div>;
     }
 
     return (
-      <div>
-        <div>{this.props.control.name}</div>
-        {renderValue(this.props.control.values)}
+      <div className='control multi-control'>
+        <div className='control-name'>{this.props.control.name}</div>
+        {renderValue( this.props.control.values, 0 )}
       </div>
     );
   }
@@ -47,19 +55,25 @@ export var TabView = React.createClass({
     };
   },
 
+  propTypes: {
+    tab: React.PropTypes.object
+  },
+
   render() {
     return (
-      <div>
-        <div>{this.props.tab.name}</div>
-        {this.props.tab.controls.map( control => {
-          if ( control.hasOwnProperty( 'value' ) ) {
-            return <ControlView control={control}/>;
-          } else if ( control.hasOwnProperty( 'values' ) ) {
-            return <MultiControlView control={control}/>;
-          }
+      <div className='tab'>
+        <div className='tab-name'>{this.props.tab.name}</div>
+        <div className='tab-controls'>
+          {this.props.tab.controls.map(( control, i ) => {
+            if ( control.hasOwnProperty( 'value' ) ) {
+              return <ControlView key={i} control={control}/>;
+            } else if ( control.hasOwnProperty( 'values' ) ) {
+              return <MultiControlView key={i} control={control}/>;
+            }
 
-          return <div>{control}</div>;
-        })}
+            return <div key={i}>{control}</div>;
+          })}
+        </div>
       </div>
     );
   }
@@ -72,11 +86,15 @@ export var TabsView = React.createClass({
     };
   },
 
+  propTypes: {
+    tabs: React.PropTypes.array
+  },
+
   render() {
     return (
-      <div>
-        {this.props.tabs.map( tab => {
-          return <TabView tab={tab}/>;
+      <div className='tabs'>
+        {this.props.tabs.map(( tab, i ) => {
+          return <TabView key={i} tab={tab}/>;
         })}
       </div>
     );
@@ -91,9 +109,14 @@ export var StateView = React.createClass({
     };
   },
 
+  propTypes: {
+    controls: React.PropTypes.array,
+    tabs: React.PropTypes.array
+  },
+
   render() {
     return (
-      <div>
+      <div className='state'>
         <TabView tab={{
           name: '0',
           controls: this.props.controls
