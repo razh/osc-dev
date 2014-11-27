@@ -178,7 +178,7 @@ function route( data ) {
 
   var values = data.slice(1);
   if ( match.coordinates ) {
-    values = [ match.coordinates, values ];
+    values = [ match.coordinates, ...values ];
   }
 
   control.set( ...values );

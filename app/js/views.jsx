@@ -1,5 +1,27 @@
 import React from 'react/addons';
 
+export var XYView = React.createClass({
+  getDefaultProps() {
+    return {
+      control: {}
+    };
+  },
+
+  propTypes: {
+    control: React.PropTypes.object
+  },
+
+  render() {
+    return (
+      <div className='control xy'>
+        <div className='control-name'>{this.props.control.name}</div>
+        <div className='control-value'>{this.props.control.x}</div>
+        <div className='control-value'>{this.props.control.y}</div>
+      </div>
+    );
+  }
+});
+
 export var ControlView = React.createClass({
   getDefaultProps() {
     return {
@@ -65,7 +87,9 @@ export var TabView = React.createClass({
         <div className='tab-name'>{this.props.tab.name}</div>
         <div className='tab-controls'>
           {this.props.tab.controls.map(( control, i ) => {
-            if ( control.hasOwnProperty( 'value' ) ) {
+            if ( control.constructor.type === 'xy' ) {
+              return <XYView key={i} control={control}/>;
+            } else if ( control.hasOwnProperty( 'value' ) ) {
               return <ControlView key={i} control={control}/>;
             } else if ( control.hasOwnProperty( 'values' ) ) {
               return <MultiControlView key={i} control={control}/>;
