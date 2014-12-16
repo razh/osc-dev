@@ -1,4 +1,4 @@
-import _ from './utils';
+import _ from 'lodash';
 
 import {
   Push,
@@ -48,7 +48,7 @@ var constructors = [
   MultiFader
 ];
 
-var parsers = constructors.map(function( constructor ) {
+var parsers = _.map( constructors.map, constructor => {
   var type = constructor.type;
 
   var regexString = '\\/' +
@@ -124,7 +124,7 @@ function route( data ) {
     match = /\/([^\/]+)/.exec( data[0] );
     if ( match ) {
       name = match[1];
-      tab = _.find( state.tabs, tab => tab.name === name );
+      tab = _.find( state.tabs, { name } );
 
       if ( !tab ) {
         tab = new Tab( name );
@@ -154,7 +154,7 @@ function route( data ) {
   // Find controls array.
   var controls;
   if ( match.tab ) {
-    tab = _.find( state.tabs, tab => tab.name === match.tab );
+    tab = _.find( state.tabs, { name: match.tab } );
 
     if ( !tab ) {
       tab = new Tab( match.tab );
@@ -167,7 +167,7 @@ function route( data ) {
     controls = state.controls;
   }
 
-  var control = _.find( controls, control => control.name === match.name );
+  var control = _.find( controls, { name: match.name } );
 
   if ( !control ) {
     control = new match.constructor( match.name );
@@ -183,5 +183,5 @@ function route( data ) {
 
   control.set( ...values );
 
-  requestAnimationFrame(() => render( state ));
+  requestAnimationFrame( () => render( state ) );
 }

@@ -1,14 +1,4 @@
 export default {
-  find( array, callback ) {
-    var element;
-    for ( var i = 0, il = array.length; i < il; i++ ) {
-      element = array[i];
-      if ( callback( element, i, array ) ) {
-        return element;
-      }
-    }
-  },
-
   set( array, indices, value ) {
     if ( !Array.isArray( array ) &&
          !Array.isArray( indices ) &&
@@ -32,9 +22,5 @@ export default {
 
       array = array[ index ];
     }
-  },
-
-  parseInt( n ) {
-    return parseInt( n, 10 );
   }
 };

@@ -1,4 +1,4 @@
-import _ from './utils';
+import Utils from './utils';
 
 class Control {
   constructor( name = '', value = 0 ) {
@@ -19,7 +19,7 @@ class MultiControl {
   }
 
   set( indices, value ) {
-    _.set( this.values, indices, value );
+    Utils.set( this.values, indices, value );
     return this;
   }
 }
