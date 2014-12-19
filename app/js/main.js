@@ -48,7 +48,7 @@ var constructors = [
   MultiFader
 ];
 
-var parsers = _.map( constructors.map, constructor => {
+var parsers = _.map( constructors, constructor => {
   var type = constructor.type;
 
   var regexString = '\\/' +
